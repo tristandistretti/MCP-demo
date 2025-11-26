@@ -12,7 +12,6 @@ from msgraph.generated.models.item_body import ItemBody
 from msgraph.generated.models.body_type import BodyType
 from msgraph.generated.models.recipient import Recipient
 from msgraph.generated.models.email_address import EmailAddress
-from azure.identity import DeviceCodeCredential
 from azure.core.credentials import AccessToken
 import os
 from dotenv import load_dotenv
