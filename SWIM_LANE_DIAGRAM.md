@@ -7,37 +7,38 @@
 │   │                │                     │                      │                 │
 │   ↓                │                     │                      │                 │
 │ Check Ollama       │                     │                      │                 │
+│ & Model            │                     │                      │                 │
 │   │                │                     │                      │                 │
 │   ↓                │                     │                      │                 │
-│ Spawn Process A    │                     │                      │                 │
+│ Start mcpserver.py │  ● Start            │                      │                 │
+│ via stdio (once)   │    ↓                │                      │                 │
+│ and open           │  Initialize Session │                      │                 │
+│ ClientSession      │    ↓                │                      │                 │
 │   │                │                     │                      │                 │
-│   ├───list_tools──→│  ● Start            │                      │                 │
-│   │                │    ↓                │                      │                 │
-│   │                │  Load Token         │                      │                 │
+│   ├─list_tools────→│  list_tools         │                      │                 │
 │   │                │    ↓                │                      │                 │
 │   │←──[tools]──────│  Return Tools       │                      │                 │
-│   │                │    ↓                │                      │                 │
-│   │                │    ●  End           │                      │                 │
+│   │                │                     │                      │                 │
 │   ↓                │                     │                      │                 │
 │ Format Tools       │                     │                      │                 │
+│ for Ollama prompt  │                     │                      │                 │
 │   │                │                     │                      │                 │
 │   ├────prompt───────────────────────── → │  ● Start             │                 │
-│   │                │                     │    ↓                 │                 │
+│   │   (tools desc) │                     │    ↓                 │                 │
 │   │                │                     │  Analyze Request     │                 │
 │   │                │                     │    ↓                 │                 │
 │   │                │                     │  Select Tool         │                 │
 │   │                │                     │    ↓                 │                 │
 │   │←────JSON──────────────────────────── │  Generate JSON       │                 │
-│   │                │                     │    ↓                 │                 │
+│   │ (tool+args)    │                     │    ↓                 │                 │
 │   ↓                │                     │    ●  End            │                 │
 │ Parse JSON         │                     │                      │                 │
+│ (tool, arguments)  │                     │                      │                 │
 │   │                │                     │                      │                 │
-│   ↓                │                     │                      │                 │
-│ Spawn Process B    │                     │                      │                 │
-│   │                │                     │                      │                 │
-│   ├──call_tool────→│  ● Start            │                      │                 │
-│   │   get_emails(3)│    ↓                │                      │                 │
-│   │                │  Load Token         │                      │                 │
+│   ├─call_tool─────→│  ● Start            │                      │                 │
+│   │  get_emails(3) │    ↓                │                      │                 │
+│   │  (same         │  Use existing       │                      │                 │
+│   │  Session)      │  Session            │                      │                 │
 │   │                │    ↓                │                      │                 │
 │   │                │  Execute Function   │                      │                 │
 │   │                │    ↓                │                      │                 │
@@ -53,6 +54,9 @@
 │   ↓                │                     │                      │                 │
 │ Display Results    │                     │                      │                 │
 │   │                │                     │                      │                 │
+│   ↓                │                     │                      │                 │
+│ Close Session &    │  ● End              │                      │                 │
+│ stdio client       │                     │                      │                 │
 │   ↓                │                     │                      │                 │
 │   ●  End           │                     │                      │                 │
 │                    │                     │                      │                 │
